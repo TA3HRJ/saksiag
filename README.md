@@ -6,7 +6,7 @@ SaksıAğ; balkonlardaki akıllı saksıları **LoRa mesh** ile birbirine bağla
 
 > ⚠️ **Durum:** Bu bir **erken konsept taslağıdır.** Teknik değerler (menzil, band, güç bütçesi, maliyet) tahminidir ve bir pilot öncesi doğrulanmalıdır.
 
-Konseptin tam görsel özeti için depodaki [`index.html`](index.html) dosyasını bir tarayıcıda açın.
+🌐 **Canlı konsept sayfası:** <https://ta3hrj.github.io/saksiag/> — ya da depodaki [`index.html`](index.html) dosyasını yerelde açın.
 
 ---
 
@@ -90,11 +90,19 @@ Meshtastic-uyumlu bir taban üzerine kurulur — mesh protokolü yeniden icat ed
 
 ---
 
-## Katkı & lisans
+## Katkı
 
-Bu depo bir konsept aşamasındadır; fikir, geri bildirim ve teknik itirazlar memnuniyetle karşılanır — bir Issue açın.
+Bu depo erken bir konsept aşamasındadır; fikir, geri bildirim ve teknik itirazlar memnuniyetle karşılanır — bir Issue ya da Pull Request açın. Katkı kuralları ve DCO imzası için [`CONTRIBUTING.md`](CONTRIBUTING.md).
 
-**Lisans:** Henüz belirlenmedi. Niyet açık donanım/açık kaynaktır (örn. yazılım için MIT, donanım için CERN-OHL değerlendirilecek).
+## Lisans
+
+Çok-lisanslı bir projedir — ayrıntılar için [`LICENSING.md`](LICENSING.md):
+
+- **Yazılım / firmware:** [AGPL-3.0-or-later](LICENSE)
+- **Donanım tasarımları:** [CERN-OHL-S-2.0](LICENSES/CERN-OHL-S-2.0.txt)
+- **Doküman & içerik:** [CC-BY-SA-4.0](LICENSES/CC-BY-SA-4.0.txt)
+
+"SaksıAğ" adı ve logosu bu lisansların dışında, proje sahibince saklı tutulur.
 
 ---
 
