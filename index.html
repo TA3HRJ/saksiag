@@ -1,0 +1,885 @@
+<title>SaksıAğ — Dayanıklı Balkon Ağı</title>
+<style>
+  :root {
+    --ground: #edf0e8;
+    --surface: #f8faf4;
+    --surface-2: #ffffff;
+    --ink: #16201a;
+    --muted: #566056;
+    --faint: #7c8578;
+    --line: #d5dccb;
+    --brand: #2c6a44;
+    --brand-strong: #1c4a2f;
+    --accent: #c6801a;
+    --accent-soft: #f0e2c4;
+    --alert: #bd4029;
+    --alert-soft: #f2d9d1;
+
+    --mono: ui-monospace, "Cascadia Code", "Consolas", "SFMono-Regular", monospace;
+    --sans: system-ui, "Segoe UI", -apple-system, "Helvetica Neue", Arial, sans-serif;
+
+    --step-0: clamp(0.82rem, 0.8rem + 0.1vw, 0.9rem);
+    --step-1: clamp(1rem, 0.95rem + 0.25vw, 1.15rem);
+    --step-2: clamp(1.35rem, 1.2rem + 0.7vw, 1.75rem);
+    --step-3: clamp(1.9rem, 1.5rem + 1.8vw, 3rem);
+    --step-4: clamp(3rem, 2rem + 5vw, 6rem);
+
+    --maxw: 1080px;
+  }
+
+  @media (prefers-color-scheme: dark) {
+    :root {
+      --ground: #0d1411;
+      --surface: #141e18;
+      --surface-2: #182420;
+      --ink: #e7ede4;
+      --muted: #98a595;
+      --faint: #6d7a6c;
+      --line: #26312a;
+      --brand: #52a06c;
+      --brand-strong: #6fbd88;
+      --accent: #e0a63c;
+      --accent-soft: #33291320;
+      --alert: #e0664b;
+      --alert-soft: #33161020;
+    }
+  }
+  :root[data-theme="dark"] {
+    --ground: #0d1411; --surface: #141e18; --surface-2: #182420;
+    --ink: #e7ede4; --muted: #98a595; --faint: #6d7a6c; --line: #26312a;
+    --brand: #52a06c; --brand-strong: #6fbd88; --accent: #e0a63c;
+    --accent-soft: #33291320; --alert: #e0664b; --alert-soft: #33161020;
+  }
+  :root[data-theme="light"] {
+    --ground: #edf0e8; --surface: #f8faf4; --surface-2: #ffffff;
+    --ink: #16201a; --muted: #566056; --faint: #7c8578; --line: #d5dccb;
+    --brand: #2c6a44; --brand-strong: #1c4a2f; --accent: #c6801a;
+    --accent-soft: #f0e2c4; --alert: #bd4029; --alert-soft: #f2d9d1;
+  }
+
+  * { box-sizing: border-box; }
+
+  body {
+    margin: 0;
+    background: var(--ground);
+    color: var(--ink);
+    font-family: var(--sans);
+    font-size: var(--step-1);
+    line-height: 1.6;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  .wrap { max-width: var(--maxw); margin: 0 auto; padding: 0 24px; }
+
+  .eyebrow {
+    font-family: var(--mono);
+    font-size: var(--step-0);
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--accent);
+    margin: 0;
+  }
+
+  h1, h2, h3 { text-wrap: balance; line-height: 1.08; }
+
+  a { color: var(--brand-strong); }
+
+  /* ---------- HERO ---------- */
+  .hero { padding: clamp(48px, 8vw, 104px) 0 40px; }
+  .hero-mark {
+    display: flex; align-items: baseline; gap: 14px; flex-wrap: wrap;
+    margin: 18px 0 0;
+  }
+  .hero h1 {
+    font-size: var(--step-4);
+    font-weight: 800;
+    letter-spacing: -0.03em;
+    margin: 0;
+  }
+  .hero h1 .dot { color: var(--brand); }
+  .hero-tag {
+    font-family: var(--mono);
+    font-size: var(--step-0);
+    color: var(--muted);
+    letter-spacing: 0.02em;
+    border-left: 2px solid var(--brand);
+    padding-left: 12px;
+  }
+  .lede {
+    font-size: var(--step-2);
+    font-weight: 500;
+    max-width: 22ch;
+    margin: 26px 0 0;
+    letter-spacing: -0.01em;
+  }
+  .lede-sub {
+    max-width: 56ch;
+    color: var(--muted);
+    margin: 18px 0 0;
+  }
+  .lede-sub b { color: var(--ink); font-weight: 600; }
+
+  .statrow {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 1px;
+    background: var(--line);
+    border: 1px solid var(--line);
+    border-radius: 12px;
+    overflow: hidden;
+    margin-top: 40px;
+  }
+  .stat { background: var(--surface); padding: 18px 20px; }
+  .stat .k { font-family: var(--mono); font-size: 0.72rem; letter-spacing: 0.1em; text-transform: uppercase; color: var(--faint); }
+  .stat .v { font-size: 1.5rem; font-weight: 700; letter-spacing: -0.02em; margin-top: 4px; color: var(--brand-strong); font-variant-numeric: tabular-nums; }
+  .stat .v small { font-size: 0.8rem; font-weight: 500; color: var(--muted); }
+
+  @media (max-width: 640px) {
+    .statrow { grid-template-columns: repeat(2, 1fr); }
+  }
+
+  /* ---------- CANVAS PANEL ---------- */
+  .netpanel {
+    margin-top: 44px;
+    border: 1px solid var(--line);
+    border-radius: 16px;
+    background:
+      linear-gradient(var(--surface), var(--surface));
+    overflow: hidden;
+    position: relative;
+  }
+  .netpanel .bar {
+    display: flex; justify-content: space-between; align-items: center;
+    padding: 12px 18px;
+    border-bottom: 1px solid var(--line);
+    font-family: var(--mono);
+    font-size: 0.72rem;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--faint);
+  }
+  .netpanel .bar .live { color: var(--alert); display: inline-flex; align-items: center; gap: 7px; }
+  .netpanel .bar .live::before {
+    content: ""; width: 8px; height: 8px; border-radius: 50%;
+    background: var(--alert);
+  }
+  canvas#mesh { display: block; width: 100%; height: 340px; }
+  .netpanel .legend {
+    position: absolute; bottom: 12px; left: 18px;
+    display: flex; gap: 16px; flex-wrap: wrap;
+    font-family: var(--mono); font-size: 0.68rem; color: var(--muted);
+    background: color-mix(in srgb, var(--surface) 82%, transparent);
+    padding: 6px 10px; border-radius: 8px; border: 1px solid var(--line);
+  }
+  .legend i { display: inline-block; width: 9px; height: 9px; border-radius: 50%; margin-right: 5px; vertical-align: middle; }
+
+  /* ---------- SECTION SCAFFOLD ---------- */
+  section { padding: clamp(48px, 8vw, 88px) 0; border-top: 1px solid var(--line); }
+  .sec-head { max-width: 62ch; }
+  .sec-head h2 { font-size: var(--step-3); font-weight: 750; letter-spacing: -0.02em; margin: 12px 0 0; }
+  .sec-head p { color: var(--muted); margin: 16px 0 0; }
+
+  /* ---------- LAYER CARDS ---------- */
+  .layers { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; margin-top: 40px; }
+  @media (max-width: 800px) { .layers { grid-template-columns: 1fr; } }
+  .layer {
+    background: var(--surface); border: 1px solid var(--line);
+    border-radius: 14px; padding: 24px; position: relative;
+    display: flex; flex-direction: column; gap: 10px;
+  }
+  .layer .tag { font-family: var(--mono); font-size: 0.7rem; letter-spacing: 0.1em; text-transform: uppercase; color: var(--accent); }
+  .layer h3 { font-size: 1.3rem; margin: 0; letter-spacing: -0.01em; }
+  .layer p { margin: 0; color: var(--muted); font-size: 0.98rem; }
+  .layer .spec {
+    margin-top: auto; font-family: var(--mono); font-size: 0.76rem; color: var(--faint);
+    border-top: 1px dashed var(--line); padding-top: 12px; line-height: 1.9;
+  }
+  .layer .spec b { color: var(--brand-strong); font-weight: 600; }
+  .layer[data-role="aux"] .tag { color: var(--muted); }
+
+  /* ---------- DISASTER ---------- */
+  .disaster { display: grid; grid-template-columns: 1.1fr 0.9fr; gap: 32px; align-items: start; margin-top: 40px; }
+  @media (max-width: 860px) { .disaster { grid-template-columns: 1fr; } }
+  .steps { list-style: none; margin: 0; padding: 0; counter-reset: s; }
+  .steps li {
+    counter-increment: s; position: relative; padding: 0 0 22px 46px;
+  }
+  .steps li::before {
+    content: counter(s); position: absolute; left: 0; top: -2px;
+    width: 30px; height: 30px; border-radius: 50%;
+    background: var(--brand); color: #fff; font-family: var(--mono);
+    font-size: 0.85rem; display: grid; place-items: center; font-weight: 600;
+  }
+  .steps li:not(:last-child)::after {
+    content: ""; position: absolute; left: 14px; top: 30px; bottom: 6px;
+    width: 2px; background: var(--line);
+  }
+  .steps li b { display: block; margin-bottom: 2px; }
+  .steps li span { color: var(--muted); font-size: 0.96rem; }
+  .steps li.crit::before { background: var(--alert); }
+
+  .callout {
+    background: var(--alert-soft);
+    border: 1px solid color-mix(in srgb, var(--alert) 40%, var(--line));
+    border-left: 4px solid var(--alert);
+    border-radius: 10px; padding: 20px 22px;
+  }
+  .callout.ok {
+    background: color-mix(in srgb, var(--brand) 10%, var(--surface));
+    border-color: color-mix(in srgb, var(--brand) 40%, var(--line));
+    border-left-color: var(--brand);
+  }
+  .callout .lbl { font-family: var(--mono); font-size: 0.7rem; letter-spacing: 0.1em; text-transform: uppercase; color: var(--alert); }
+  .callout.ok .lbl { color: var(--brand-strong); }
+  .callout p { margin: 8px 0 0; font-size: 0.96rem; }
+  .callout + .callout { margin-top: 16px; }
+
+  /* ---------- CONVERGENCE GRID ---------- */
+  .conv { display: grid; grid-template-columns: repeat(4, 1fr); gap: 12px; margin-top: 40px; }
+  @media (max-width: 900px) { .conv { grid-template-columns: repeat(2, 1fr); } }
+  @media (max-width: 480px) { .conv { grid-template-columns: 1fr; } }
+  .node {
+    background: var(--surface); border: 1px solid var(--line);
+    border-radius: 12px; padding: 18px; display: flex; flex-direction: column; gap: 8px;
+    min-height: 148px;
+  }
+  .node .id { font-family: var(--mono); font-size: 0.72rem; color: var(--faint); display: flex; justify-content: space-between; align-items: center; }
+  .node .chip { font-size: 0.62rem; letter-spacing: 0.08em; text-transform: uppercase; padding: 2px 7px; border-radius: 20px; font-weight: 600; }
+  .node[data-t="core"] { border-color: color-mix(in srgb, var(--brand) 45%, var(--line)); }
+  .node[data-t="core"] .chip { background: color-mix(in srgb, var(--brand) 18%, var(--surface)); color: var(--brand-strong); }
+  .node[data-t="layer"] .chip { background: var(--accent-soft); color: var(--accent); border: 1px solid color-mix(in srgb, var(--accent) 30%, transparent); }
+  .node h4 { margin: 0; font-size: 1.02rem; letter-spacing: -0.01em; }
+  .node p { margin: 0; color: var(--muted); font-size: 0.86rem; line-height: 1.5; }
+
+  /* ---------- BOM TABLE ---------- */
+  .tablewrap { overflow-x: auto; margin-top: 36px; border: 1px solid var(--line); border-radius: 12px; }
+  table { border-collapse: collapse; width: 100%; font-size: 0.9rem; min-width: 560px; }
+  th, td { text-align: left; padding: 13px 18px; border-bottom: 1px solid var(--line); }
+  thead th { font-family: var(--mono); font-size: 0.68rem; letter-spacing: 0.1em; text-transform: uppercase; color: var(--faint); background: var(--surface); }
+  tbody tr:last-child td { border-bottom: none; }
+  td.part { font-family: var(--mono); font-size: 0.82rem; color: var(--brand-strong); white-space: nowrap; }
+  tbody tr:hover td { background: color-mix(in srgb, var(--brand) 6%, transparent); }
+  .v1 { font-family: var(--mono); font-size: 0.68rem; padding: 2px 8px; border-radius: 20px; border: 1px solid var(--line); color: var(--muted); }
+  .v1.now { color: var(--brand-strong); border-color: color-mix(in srgb, var(--brand) 40%, var(--line)); }
+
+  /* ---------- ROADMAP ---------- */
+  .road { display: grid; grid-template-columns: repeat(4, 1fr); gap: 14px; margin-top: 40px; }
+  @media (max-width: 820px) { .road { grid-template-columns: 1fr 1fr; } }
+  @media (max-width: 460px) { .road { grid-template-columns: 1fr; } }
+  .phase { background: var(--surface); border: 1px solid var(--line); border-radius: 12px; padding: 20px; }
+  .phase .n { font-family: var(--mono); font-size: 0.72rem; color: var(--accent); letter-spacing: 0.08em; }
+  .phase h4 { margin: 6px 0 8px; font-size: 1.08rem; }
+  .phase p { margin: 0; color: var(--muted); font-size: 0.88rem; }
+  .phase.active { border-color: var(--brand); box-shadow: inset 0 0 0 1px var(--brand); }
+
+  footer { border-top: 1px solid var(--line); padding: 40px 0 70px; color: var(--faint); font-family: var(--mono); font-size: 0.74rem; letter-spacing: 0.04em; }
+  footer b { color: var(--muted); }
+
+  /* hazard verdict pills */
+  .vd { font-family: var(--mono); font-size: 0.72rem; font-weight: 600; padding: 2px 9px; border-radius: 20px; white-space: nowrap; }
+  .vd.g { background: color-mix(in srgb, var(--brand) 16%, var(--surface)); color: var(--brand-strong); }
+  .vd.y { background: var(--accent-soft); color: var(--accent); }
+  .vd.r { background: var(--alert-soft); color: var(--alert); }
+  td .hz, td.hz { font-family: var(--mono); font-size: 0.78rem; color: var(--faint); }
+
+  /* comparison columns */
+  th.col-win, td.col-win { background: color-mix(in srgb, var(--brand) 9%, var(--surface)); }
+  td.col-weak { color: var(--muted); }
+
+  /* flow diagram */
+  .flow { display: flex; flex-direction: column; gap: 0; margin-top: 28px; max-width: 660px; }
+  .fstep { display: flex; gap: 14px; align-items: flex-start; background: var(--surface); border: 1px solid var(--line); border-radius: 11px; padding: 13px 16px; }
+  .fstep .fi { font-family: var(--mono); font-size: 0.64rem; letter-spacing: 0.06em; text-transform: uppercase; color: #fff; background: var(--brand); padding: 4px 8px; border-radius: 6px; white-space: nowrap; flex-shrink: 0; margin-top: 2px; }
+  .fstep.crit .fi { background: var(--alert); }
+  .fstep b { display: block; font-size: 0.98rem; }
+  .fstep span { color: var(--muted); font-size: 0.9rem; }
+  .fconn { height: 12px; width: 2px; background: var(--line); margin: 0 0 0 38px; }
+  .subh { margin: 44px 0 0; font-size: 1.15rem; letter-spacing: -0.01em; }
+  .subh small { font-weight: 400; color: var(--faint); font-size: 0.78rem; letter-spacing: 0; }
+
+  /* impact x feasibility matrix */
+  .matrix-axis { font-family: var(--mono); font-size: 0.68rem; color: var(--faint); letter-spacing: 0.05em; text-transform: uppercase; margin-top: 40px; }
+  .matrix { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-top: 14px; }
+  @media (max-width: 620px) { .matrix { grid-template-columns: 1fr; } }
+  .quad { border: 1px solid var(--line); border-radius: 12px; padding: 16px 16px 18px; background: var(--surface); }
+  .quad.win { border-color: color-mix(in srgb, var(--brand) 50%, var(--line)); background: color-mix(in srgb, var(--brand) 8%, var(--surface)); }
+  .quad .qh { font-family: var(--mono); font-size: 0.68rem; letter-spacing: 0.04em; text-transform: uppercase; color: var(--faint); margin: 0 0 12px; line-height: 1.5; }
+  .quad.win .qh { color: var(--brand-strong); }
+  .mchips { display: flex; flex-wrap: wrap; gap: 7px; }
+  .mchip { font-size: 0.82rem; padding: 4px 10px; border-radius: 8px; border: 1px solid var(--line); background: var(--surface-2); display: inline-flex; gap: 7px; align-items: baseline; }
+  .mchip s { font-family: var(--mono); font-size: 0.64rem; color: var(--faint); text-decoration: none; font-variant-numeric: tabular-nums; }
+  .quad.win .mchip { border-color: color-mix(in srgb, var(--brand) 30%, var(--line)); }
+
+  @media (prefers-reduced-motion: reduce) {
+    * { animation: none !important; transition: none !important; }
+  }
+</style>
+
+<div class="wrap">
+
+  <header class="hero">
+    <p class="eyebrow">Açık donanım · Dayanıklı ağ · v1 konsept</p>
+    <div class="hero-mark">
+      <h1>SaksıAğ<span class="dot">.</span></h1>
+      <span class="hero-tag">balkon = düğüm<br>şehir = ağ</span>
+    </div>
+
+    <p class="lede">Binlerce balkon saksısı, tek bir dayanıklı sinir ağı.</p>
+    <p class="lede-sub">Toprağı ölçer, tozlaşmayı besler, yağmuru tutar — ve baz istasyonları çöktüğünde <b>afet mesajını balkondan balkona taşır.</b> İnternet gerekmez; her saksı bir sonrakine sinyali atlatır.</p>
+
+    <div class="statrow">
+      <div class="stat"><div class="k">Omurga</div><div class="v">LoRa <small>868 MHz</small></div></div>
+      <div class="stat"><div class="k">Menzil / atlama</div><div class="v">~2–5 <small>km</small></div></div>
+      <div class="stat"><div class="k">Enerji</div><div class="v">Güneş <small>+ LiFePO4</small></div></div>
+      <div class="stat"><div class="k">Telefon köprüsü</div><div class="v">BLE <small>yardımcı</small></div></div>
+    </div>
+
+    <div class="netpanel">
+      <div class="bar">
+        <span>MESH-CANLI · MAHALLE ÖLÇEĞİ</span>
+        <span class="live">afet uyarısı yayılıyor</span>
+      </div>
+      <canvas id="mesh" aria-label="Balkon düğümlerinden oluşan ağ; bir düğümden çıkan afet uyarısının komşu düğümlere atlayarak yayılması animasyonu"></canvas>
+      <div class="legend">
+        <span><i style="background:var(--brand)"></i>saksı düğümü</span>
+        <span><i style="background:var(--accent)"></i>ağ geçidi</span>
+        <span><i style="background:var(--alert)"></i>uyarı dalgası</span>
+      </div>
+    </div>
+  </header>
+
+  <section>
+    <div class="sec-head">
+      <p class="eyebrow">Temel fikir</p>
+      <h2>Tek başına bir saksı üründür. Birbirine bağlı binlercesi altyapıdır.</h2>
+      <p>Değer tek cihazda değil, cihazların <b>merkezi olmayan ağında</b>. Baz istasyonu ve internet çökse bile mesh ayakta kalır — çünkü her düğüm hem sensör hem de yayıcıdır. Türkiye gibi <b>çok-afetli</b> ülkelerde bu, süs değil hayat kurtaran bir omurgadır.</p>
+    </div>
+  </section>
+
+  <section>
+    <div class="sec-head">
+      <p class="eyebrow">Tasarım gerekçesi</p>
+      <h2>Neden saksı — düz bir kutu değil?</h2>
+      <p>Form seçimi süs değil, stratejinin ta kendisi. İçindeki elektronik birebir aynı olsa bile <b>düz gri bir kutu bu projeyi çökertirdi.</b> Sebep tek cümlede: ağın tek gerçek sorunu <b>yeterince çok düğümü doğru yerlere gönüllüce koydurmak</b> — ve bunu yalnızca insanların <i>zaten istediği</i> bir nesne çözer.</p>
+    </div>
+
+    <div class="tablewrap">
+      <table>
+        <thead><tr><th>Boyut</th><th>Düz kutu</th><th class="col-win">Saksı</th></tr></thead>
+        <tbody>
+          <tr><td><b>Yayılma / yoğunluk</b></td><td class="col-weak">Kimse gönüllü takmaz; “gözetleme” algısı</td><td class="col-win">İnsanlar zaten alıp balkona koyuyor → şehir ölçekli yoğunluk bedava</td></tr>
+          <tr><td><b>Sensör yerleşimi</b></td><td class="col-weak">Toprak yok, su haznesi yok, bitki yok</td><td class="col-win">Toprak · hazne · bitki · güneşli konum — hepsi doğal gelir</td></tr>
+          <tr><td><b>Bakım / canlılık</b></td><td class="col-weak">Unutulur; pil biter, sessizce düşer</td><td class="col-win">Her gün sulanır → insan ilgisi = ücretsiz bakım + canlılık kontrolü</td></tr>
+          <tr><td><b>Toplumsal kabul</b></td><td class="col-weak">Kameramsı, mahremiyet direnci</td><td class="col-win">Sıcak, kişisel, zararsız; “evet” demesi kolay</td></tr>
+          <tr><td><b>Değer / misyon</b></td><td class="col-weak">Salt maliyet, ölü teknoloji</td><td class="col-win">Bitki + sağlıklı toprak + su tasarrufu; misyonu birebir cisimleştirir</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="callout" style="margin-top:20px">
+      <span class="lbl">! Dürüst karşı-argüman ve asimetri</span>
+      <p>Kutu daha ucuzdur ve elektroniği sudan uzak tutmak kolaydır; saksıda nem/korozyon riski var. Ama saksının sorunu <b>çözülebilir bir mühendislik sorunu</b> (mühürlü bölme, kapasitif sensör, drenaj); kutunun sorunu ise <b>çözülemez bir benimseme sorunu</b> — kusursuz olsa bile kimse yeterince takmaz. Çözülebilir mühendisliği, çözülemez benimsemeye tercih ederiz.</p>
+    </div>
+  </section>
+
+  <section>
+    <div class="sec-head">
+      <p class="eyebrow">Nasıl çalışır · üç katman</p>
+      <h2>Doğru işi doğru radyoya yaptır</h2>
+      <p>LoRa uzun menzilli ama düşük hızlı; BLE kısa menzilli ama telefonlarla konuşur. İkisini çakıştırmak yerine görevleri ayırdık.</p>
+    </div>
+
+    <div class="layers">
+      <div class="layer" data-role="core">
+        <span class="tag">Omurga</span>
+        <h3>LoRa · ESP32</h3>
+        <p>Düğümden düğüme küçük paketleri kilometrelerce, bina içinden geçirerek taşır. Afet uyarısı ve sensör özeti burada akar.</p>
+        <div class="spec">
+          modül: <b>SX1262</b><br>
+          band: <b>868 MHz (TR/EU)</b><br>
+          yük: <b>küçük paket, öncelikli</b>
+        </div>
+      </div>
+      <div class="layer" data-role="aux">
+        <span class="tag">Yardımcı köprü</span>
+        <h3>Bluetooth · BLE</h3>
+        <p>Telefonlarda LoRa yoktur. BLE, insan ile düğüm arasındaki köprüdür: kurulum, eşleme ve yerel veri boşaltma.</p>
+        <div class="spec">
+          rol: <b>telefon ↔ düğüm</b><br>
+          menzil: <b>~10 m, yerel</b><br>
+          büyük veri: <b>telefona aktar</b>
+        </div>
+      </div>
+      <div class="layer" data-role="core">
+        <span class="tag">Enerji</span>
+        <h3>Güneş · LiFePO4</h3>
+        <p>Bakımsız, yıllarca dışarıda. LiFePO4 sıcağa ve şarj çevrimine dayanıklı, yangın riski düşük — balkon için doğru kimya.</p>
+        <div class="spec">
+          panel: <b>balkon yönüne göre</b><br>
+          hücre: <b>LiFePO4 3.2 V</b><br>
+          uyarı: <b>soğukta şarj sınırı</b>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section>
+    <div class="sec-head">
+      <p class="eyebrow">Killer feature · afet senaryosu</p>
+      <h2>Baz istasyonu çöktüğünde ağ ayakta kalır</h2>
+      <p>Deprem anında şebeke ilk düşen şeydir. SaksıAğ şebekeye ihtiyaç duymaz — sinyal, komşu balkonlar üzerinden atlayarak yol alır.</p>
+    </div>
+
+    <div class="disaster">
+      <ol class="steps">
+        <li class="crit"><b>Sarsıntı algılanır</b><span>Saksıdaki MEMS ivmeölçer titreşimi yakalar.</span></li>
+        <li><b>Komşular teyit eder</b><span>Tek düğümün yanlış alarmı filtrelenir; birkaç düğüm aynı anda onaylayınca olay gerçek sayılır.</span></li>
+        <li><b>Uyarı LoRa ile yayılır</b><span>“Sarsıntı” paketi balkondan balkona atlayarak internetsiz ilerler.</span></li>
+        <li><b>İnsanlar bağlanır</b><span>Telefonlar BLE ile en yakın düğüme takılır: “iyiyim / yardım / burada mahsur” mesajları ağa girer.</span></li>
+        <li><b>Yardım haritalanır</b><span>İnternete çıkışı olan tek bir ağ geçidi, tüm mahallenin durumunu dışarı taşır.</span></li>
+      </ol>
+
+      <div>
+        <div class="callout ok">
+          <span class="lbl">✓ Güçlü yanı</span>
+          <p>Şebeke, elektrik ve internet çökse bile mesh çalışır. Afet <b>sonrası</b> iletişim ve yerel teyit için gerçek bir omurga.</p>
+        </div>
+        <div class="callout">
+          <span class="lbl">! Dürüst sınır &amp; nüans</span>
+          <p>Yerel LoRa atlaması sismik dalgayı geçemez; merkez üssünde uyarı yoktur. Ama <b>internete bağlı ağ geçitleri devredeyken</b> elektronik sinyal uzak mahallelere dalgadan hızlı ulaşır — uzaklaştıkça artan saniyelerce ön uyarı mümkün. Bunu <b>ana vaat değil</b>, ağ yoğunlaştıkça beliren, ulusal sistemleri (AFAD, telefon-tabanlı uyarı) besleyen bir <b>arka-plan katkı katmanı</b> olarak tutuyoruz.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section>
+    <div class="sec-head">
+      <p class="eyebrow">Kalibrasyon · çok-tehlikeli ağ</p>
+      <h2>Mesh, tehlikenin kendisinden hızlıysa önden uyarır</h2>
+      <p>Deprem dalgasını geçemeyiz — ama <b>rüzgârla, suyla, ısıyla</b> yayılan afetler dakikalar–saatler ölçeğinde ilerler. Radyo atlaması bunları rahatça geçer. Sensörleri bu ilkeye göre seçtik.</p>
+    </div>
+
+    <div class="tablewrap">
+      <table>
+        <thead>
+          <tr><th>Afet</th><th>Yayılma hızı</th><th>Mesh önden uyarır mı?</th><th>Sensör</th></tr>
+        </thead>
+        <tbody>
+          <tr><td><b>Sel / taşkın</b></td><td class="hz">dk–saat, vadi boyunca</td><td><span class="vd g">güçlü</span></td><td class="hz">su seviyesi + yağmur + nem</td></tr>
+          <tr><td><b>Yangın</b></td><td class="hz">rüzgârla km/saat</td><td><span class="vd g">güçlü</span></td><td class="hz">sıcaklık + PM2.5 + CO</td></tr>
+          <tr><td><b>Zehirli bulut</b></td><td class="hz">rüzgârla km/saat</td><td><span class="vd g">güçlü</span></td><td class="hz">gaz (CO / NO₂ / VOC)</td></tr>
+          <tr><td><b>Sıcak hava dalgası</b></td><td class="hz">saat–gün</td><td><span class="vd g">fazlasıyla</span></td><td class="hz">sıcaklık + nem</td></tr>
+          <tr><td><b>Aşırı soğuk / don</b></td><td class="hz">saat</td><td><span class="vd g">evet</span></td><td class="hz">sıcaklık</td></tr>
+          <tr><td><b>Heyelan</b></td><td class="hz">saat (yağış sonrası)</td><td><span class="vd y">iyi</span></td><td class="hz">nem + eğim (ivmeölçer)</td></tr>
+          <tr><td><b>Fırtına / dolu</b></td><td class="hz">hücre km/saat</td><td><span class="vd y">birkaç dk</span></td><td class="hz">barometrik basınç</td></tr>
+          <tr><td><b>Doğalgaz kaçağı</b></td><td class="hz">yerel</td><td><span class="vd y">yerel güvenlik</span></td><td class="hz">metan / LPG (MQ)</td></tr>
+          <tr><td><b>Deprem</b></td><td class="hz">P/S dalga, 6–8 km/sn</td><td><span class="vd y">internet geçidiyle uzağa</span></td><td class="hz">ivmeölçer → ön uyarı (uzak) + afet-sonrası teyit</td></tr>
+          <tr><td><b>Tsunami</b></td><td class="hz">açık deniz</td><td><span class="vd r">kapsam dışı</span></td><td class="hz">—</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="callout ok" style="margin-top:20px">
+      <span class="lbl">✓ Zarafet: paylaşımlı sensörler</span>
+      <p>3–4 ucuz parça çoğu afeti kapsıyor: <b>BME680</b> (sıcak dalga + don + fırtına + hava), <b>PM sensörü</b> (yangın dumanı + kirlilik), <b>gaz sensörü</b> (yangın + kaçak + kimyasal), <b>su seviyesi</b> (sel). İvmeölçer zaten var — deprem teyidi + heyelan eğimi için çift görev yapar.</p>
+    </div>
+  </section>
+
+  <section>
+    <div class="sec-head">
+      <p class="eyebrow">Yakınsama · tek cihaz, sekiz proje</p>
+      <h2>Bir saksıya sığan sekiz amaç</h2>
+      <p><span style="color:var(--brand-strong);font-weight:600">Çekirdek</span> katmanlar fiziksel olarak cihazda; <span style="color:var(--accent);font-weight:600">yan</span> katmanlar ağın yazılım/topluluk özellikleridir.</p>
+    </div>
+
+    <div class="conv">
+      <div class="node" data-t="core"><div class="id"><span>P1</span><span class="chip">çekirdek</span></div><h4>Toprak Sağlığı</h4><p>Nem, sıcaklık, besin — saksının ana veri kaynağı.</p></div>
+      <div class="node" data-t="core"><div class="id"><span>P10</span><span class="chip">çekirdek</span></div><h4>Çevre Sensörü</h4><p>Hava, gürültü; mahalle kirlilik haritası.</p></div>
+      <div class="node" data-t="core"><div class="id"><span>P6</span><span class="chip">çekirdek</span></div><h4>Tozlaşma Koridoru</h4><p>Dostu bitki; ağ arı/kelebek yollarını haritalar.</p></div>
+      <div class="node" data-t="core"><div class="id"><span>P4</span><span class="chip">çekirdek</span></div><h4>Süngerkent</h4><p>Saksı mikro rezervuar; yağmuru tutar, seli yavaşlatır.</p></div>
+      <div class="node" data-t="core"><div class="id"><span>P5*</span><span class="chip">çekirdek</span></div><h4>Erken Uyarı</h4><p>Mesh, afet uyarısını internetsiz yayar.</p></div>
+      <div class="node" data-t="layer"><div class="id"><span>P3</span><span class="chip">yan</span></div><h4>Onarım Hakkı</h4><p>Açık donanım, 3D-baskı, modüler, tamir edilebilir.</p></div>
+      <div class="node" data-t="layer"><div class="id"><span>P2</span><span class="chip">yan</span></div><h4>Dil & Bilgi</h4><p>NFC/QR: yerel dilde yetiştirme + geleneksel bilgi.</p></div>
+      <div class="node" data-t="layer"><div class="id"><span>P5</span><span class="chip">yan</span></div><h4>Zihinsel Sağlık</h4><p>Bahçecilik + komşuluk ağı; izolasyonu azaltır.</p></div>
+    </div>
+  </section>
+
+  <section>
+    <div class="sec-head">
+      <p class="eyebrow">Teknik mimari</p>
+      <h2>Aynı donanım, üç rol; olay ancak komşu teyidiyle gerçek sayılır</h2>
+      <p>Üretim tek tip, konuşlanma esnek — rol firmware'de belirlenir. Ucuz sensörlerin güvenilmezliğini <b>ağ mimarisi</b> telafi eder: tek düğümün yanlış alarmı yayılmaz.</p>
+    </div>
+
+    <div class="layers">
+      <div class="layer" data-role="core">
+        <span class="tag">Çoğunluk</span>
+        <h3>Yaprak düğüm</h3>
+        <p>Balkon saksısı: algılar, kendi olayını yayınlar, uyur. Ağın gözü ve kulağı.</p>
+        <div class="spec">güç: <b>uyku öncelikli</b><br>görev: <b>algıla + yayınla</b></div>
+      </div>
+      <div class="layer" data-role="core">
+        <span class="tag">Orta</span>
+        <h3>Yönlendirici</h3>
+        <p>Sürekli açık; mesajları röle eder. Mesh'in bel kemiği, çok-atlamalı iletimi sağlar.</p>
+        <div class="spec">güç: <b>sürekli açık</b><br>görev: <b>röle / relay</b></div>
+      </div>
+      <div class="layer" data-role="aux">
+        <span class="tag">Az · mahallede 1–3</span>
+        <h3>Ağ geçidi</h3>
+        <p>WiFi/GSM çıkışı olan düğüm; mahalle verisini buluta ve haritaya taşır.</p>
+        <div class="spec">güç: <b>şebeke destekli</b><br>görev: <b>internete köprü</b></div>
+      </div>
+    </div>
+
+    <h3 class="subh">Veri akışı</h3>
+    <div class="flow">
+      <div class="fstep"><span class="fi">1 · algılama</span><div><b>Sensörler okur</b><span>toprak · ivme · BME680 · PM · gaz · su seviyesi</span></div></div>
+      <div class="fconn"></div>
+      <div class="fstep"><span class="fi">2 · kenar</span><div><b>ESP32 eşik + yerel karar</b><span>ölçüm bir eşiği aşıyor mu?</span></div></div>
+      <div class="fconn"></div>
+      <div class="fstep crit"><span class="fi">3 · teyit</span><div><b>Komşu onayı</b><span>N komşu aynı olayı görürse → “doğrulanmış olay” (yanlış alarm filtresi)</span></div></div>
+      <div class="fconn"></div>
+      <div class="fstep"><span class="fi">4 · taşıma</span><div><b>LoRa mesh</b><span>düğümden düğüme, öncelik sırasına göre</span></div></div>
+      <div class="fconn"></div>
+      <div class="fstep"><span class="fi">5 · köprü</span><div><b>BLE → telefon · Gateway → internet</b><span>insana ve haritaya ulaşır</span></div></div>
+    </div>
+
+    <h3 class="subh">Mesaj önceliği <small>· LoRa %1 yayın bütçesi bu sırayla harcanır</small></h3>
+    <div class="tablewrap" style="margin-top:16px">
+      <table>
+        <thead><tr><th>Öncelik</th><th>İçerik</th><th>Taşıma tarzı</th></tr></thead>
+        <tbody>
+          <tr><td class="part">P0</td><td>Afet alarmı (yangın / sel / sarsıntı)</td><td>Broadcast, flood-fill, tekrarlı — hız önce</td></tr>
+          <tr><td class="part">P1</td><td>İnsan mesajı (“iyiyim / yardım”)</td><td>Güvenilir, ack'li</td></tr>
+          <tr><td class="part">P2</td><td>Sensör özeti</td><td>Periyodik, toplu</td></tr>
+          <tr><td class="part">P3</td><td>Rutin telemetri</td><td>Fırsatçı, atılabilir</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <h3 class="subh">Güç bütçesi &amp; maliyet <small>· kaba, pilot öncesi doğrulanacak</small></h3>
+    <div class="statrow" style="margin-top:16px">
+      <div class="stat"><div class="k">Ort. tüketim</div><div class="v">~8–12 <small>mA</small></div></div>
+      <div class="stat"><div class="k">Güneş paneli</div><div class="v">1–2 <small>W</small></div></div>
+      <div class="stat"><div class="k">Özerklik</div><div class="v">3–5 <small>gün</small></div></div>
+      <div class="stat"><div class="k">Birim maliyet</div><div class="v">~30–90 <small>USD</small></div></div>
+    </div>
+  </section>
+
+  <section>
+    <div class="sec-head">
+      <p class="eyebrow">Donanım · v1 malzeme listesi</p>
+      <h2>Datasheet</h2>
+      <p>Meshtastic-uyumlu bir taban üzerine kurulur — mesh protokolünü yeniden icat etmeden sensör + bitki + afet mantığı eklenir.</p>
+    </div>
+
+    <div class="tablewrap">
+      <table>
+        <thead>
+          <tr><th>Parça</th><th>İşlev</th><th>Not</th><th>Sürüm</th></tr>
+        </thead>
+        <tbody>
+          <tr><td class="part">ESP32 + SX1262</td><td>Beyin + LoRa omurga</td><td>Heltec / T-Beam sınıfı kart</td><td><span class="v1 now">v1</span></td></tr>
+          <tr><td class="part">Kapasitif nem sensörü</td><td>Toprak nem / sıcaklık</td><td>Korozyona dayanıklı tip</td><td><span class="v1 now">v1</span></td></tr>
+          <tr><td class="part">MEMS ivmeölçer</td><td>Sarsıntı + heyelan eğimi</td><td>Komşu düğümlerle teyit · çift görev</td><td><span class="v1 now">v1</span></td></tr>
+          <tr><td class="part">BME680</td><td>Sıcaklık + nem + basınç + VOC</td><td>Sıcak dalga · don · fırtına · hava</td><td><span class="v1 now">v1</span></td></tr>
+          <tr><td class="part">PM sensörü (PMS5003)</td><td>Partikül (duman)</td><td>Yangın + kirlilik · fanlı, aralıklı çalıştır</td><td><span class="v1 now">v1</span></td></tr>
+          <tr><td class="part">Su seviyesi (ultrasonik)</td><td>Sel / taşkın algılama</td><td>Yağmur + toprak nem ile birlikte</td><td><span class="v1 now">v1</span></td></tr>
+          <tr><td class="part">LiFePO4 + şarj kontrol</td><td>Enerji depolama</td><td>Soğukta şarj sınırına dikkat</td><td><span class="v1 now">v1</span></td></tr>
+          <tr><td class="part">Güneş paneli (1–2 W)</td><td>Enerji hasadı</td><td>Balkon yönüne göre boyutlandır</td><td><span class="v1 now">v1</span></td></tr>
+          <tr><td class="part">3D-baskı gövde</td><td>Saksı + elektronik yuvası</td><td>Açık dosya, tamir edilebilir</td><td><span class="v1 now">v1</span></td></tr>
+          <tr><td class="part">Gaz sensörü (MQ / MiCS)</td><td>CO · metan · kimyasal</td><td>Kayar & ~1–2 yıl ömür; eşik + teyit mantığı</td><td><span class="v1">v1.1</span></td></tr>
+          <tr><td class="part">NFC / QR etiket</td><td>Yerel dil + bilgi katmanı</td><td>Bitki başına içerik</td><td><span class="v1">v1.1</span></td></tr>
+        </tbody>
+      </table>
+    </div>
+  </section>
+
+  <section>
+    <div class="sec-head">
+      <p class="eyebrow">Önceliklendirme · etki × yapılabilirlik</p>
+      <h2>v1'de ne kalacak, ne ertelenecek?</h2>
+      <p>Her katmanı etki (E) ve yapılabilirlik (Y) üzerinden 1–5 puanladık. Sağ üst köşe hemen yapılır; sol üst köşe yüksek etkili ama yatırım ister; alt sıra dolgu ve ertelenecekler.</p>
+    </div>
+
+    <div class="matrix-axis">▲ ETKİ · yukarı = yüksek &nbsp; · &nbsp; ► YAPILABİLİRLİK · sağ = yüksek</div>
+    <div class="matrix">
+      <div class="quad">
+        <p class="qh">Yüksek etki · düşük yapılabilirlik → yatırım ister, koru</p>
+        <div class="mchips">
+          <span class="mchip">Afet-mesh iletişimi <s>E5·Y3</s></span>
+          <span class="mchip">Süngerkent / su tutma <s>E4·Y3</s></span>
+          <span class="mchip">Gaz / kimyasal <s>E4·Y3</s></span>
+          <span class="mchip">Topluluk / zihinsel <s>E4·Y2</s></span>
+        </div>
+      </div>
+      <div class="quad win">
+        <p class="qh">Yüksek etki · yüksek yapılabilirlik → v1, hemen yap</p>
+        <div class="mchips">
+          <span class="mchip">Yangın algılama <s>E5·Y4</s></span>
+          <span class="mchip">Sel algılama <s>E5·Y4</s></span>
+          <span class="mchip">Sıcak hava dalgası <s>E4·Y5</s></span>
+          <span class="mchip">Çevre / hava <s>E4·Y4</s></span>
+        </div>
+      </div>
+      <div class="quad">
+        <p class="qh">Düşük etki · düşük yapılabilirlik → ertele</p>
+        <div class="mchips">
+          <span class="mchip">Tozlaşma koridoru <s>E3·Y3</s></span>
+        </div>
+      </div>
+      <div class="quad">
+        <p class="qh">Düşük etki · yüksek yapılabilirlik → hızlı dolgu (bedava gelir)</p>
+        <div class="mchips">
+          <span class="mchip">Toprak sağlığı <s>E3·Y5</s></span>
+          <span class="mchip">Onarım hakkı <s>E3·Y4</s></span>
+          <span class="mchip">Dil / bilgi <s>E2·Y4</s></span>
+        </div>
+      </div>
+    </div>
+
+    <div class="callout ok" style="margin-top:24px">
+      <span class="lbl">✓ v1 kesin kapsamı</span>
+      <p><b>Yangın + sel + sıcak dalga algılama</b> çekirdek; üzerine afet-mesh iletişimi ve toprak sağlığı. Tek cümlede: <b>“Yangın, sel ve sıcak dalgayı önden haber veren, afet sonrası internetsiz konuşabilen açık balkon ağı.”</b></p>
+    </div>
+  </section>
+
+  <section>
+    <div class="sec-head">
+      <p class="eyebrow">Yol haritası</p>
+      <h2>Hepsini aynı anda değil, önce omurgayı kanıtla</h2>
+      <p>v1 = yangın, sel ve sıcak dalgayı algılayan çekirdek + dayanıklı mesh. Gerisi — ve yoğunlukla beliren deprem katkısı — ağ kanıtlandıkça katman katman gelir.</p>
+    </div>
+
+    <div class="road">
+      <div class="phase active">
+        <div class="n">FAZ 0</div>
+        <h4>Yaşayan düğüm</h4>
+        <p>Saksı + toprak + BME680 + ivmeölçer + LoRa/BLE, güneş & LiFePO4 ile. Asıl sınav: bir bitki bakımı altında düğüm aylarca bakımsız yaşıyor mu?</p>
+      </div>
+      <div class="phase">
+        <div class="n">FAZ 1</div>
+        <h4>Sokak mesh'i</h4>
+        <p>Tek bir sokak / apartman (10–20 balkon). Çok-atlamalı yayılım + yanlış alarmı bastıran komşu konsensüsü yangın ve sel senaryolarında çalışıyor mu?</p>
+      </div>
+      <div class="phase">
+        <div class="n">FAZ 2</div>
+        <h4>Çok-tehlikeli mahalle</h4>
+        <p>İnternete bağlı ağ geçidi, harita ve telefon uygulaması. Yangın, sel ve sıcak dalga uçtan uca; hava kalitesi ve tozlaşma haritaları.</p>
+      </div>
+      <div class="phase">
+        <div class="n">FAZ 3</div>
+        <h4>Kritik kütle</h4>
+        <p>Açık donanım dosyaları, kurulum kılavuzu, topluluk. Yoğunluk kritik kütleye ulaşınca deprem katkı katmanı ve şehirler-arası dayanıklılık kendiliğinden belirir.</p>
+      </div>
+    </div>
+  </section>
+
+  <footer>
+    <b>SaksıAğ</b> — v1 konsept özeti · açık donanım · kâr amacı gütmeyen · insanlık, doğa ve tüm yaşam için<br>
+    Bu sayfa bir çalışma taslağıdır; teknik değerler (menzil, band, kimya) pilot öncesi doğrulanmalıdır.
+  </footer>
+
+</div>
+
+<script>
+(function () {
+  var canvas = document.getElementById("mesh");
+  if (!canvas) return;
+  var ctx = canvas.getContext("2d");
+  var reduced = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+
+  var W = 0, H = 0, dpr = Math.min(window.devicePixelRatio || 1, 2);
+  var nodes = [], edges = [], gateways = [];
+  var srcIndex = 0, adj = [], hop = [];
+
+  function css(name) {
+    return getComputedStyle(document.documentElement).getPropertyValue(name).trim();
+  }
+  var COL = {};
+  function refreshColors() {
+    COL.brand = css("--brand");
+    COL.accent = css("--accent");
+    COL.alert = css("--alert");
+    COL.line = css("--line");
+    COL.muted = css("--faint");
+  }
+
+  function build() {
+    var rect = canvas.getBoundingClientRect();
+    W = rect.width; H = rect.height;
+    canvas.width = W * dpr; canvas.height = H * dpr;
+    ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+
+    nodes = [];
+    var cols = Math.max(6, Math.round(W / 78));
+    var rows = Math.max(3, Math.round(H / 78));
+    var mx = W / (cols + 1), my = H / (rows + 1);
+    for (var r = 0; r < rows; r++) {
+      for (var c = 0; c < cols; c++) {
+        nodes.push({
+          x: mx * (c + 1) + (Math.random() - 0.5) * mx * 0.55,
+          y: my * (r + 1) + (Math.random() - 0.5) * my * 0.55,
+          ph: Math.random() * Math.PI * 2
+        });
+      }
+    }
+
+    var thresh = Math.min(W, H) < 300 ? 96 : 118;
+    edges = [];
+    adj = nodes.map(function () { return []; });
+    for (var i = 0; i < nodes.length; i++) {
+      for (var j = i + 1; j < nodes.length; j++) {
+        var dx = nodes[i].x - nodes[j].x, dy = nodes[i].y - nodes[j].y;
+        var d = Math.sqrt(dx * dx + dy * dy);
+        if (d < thresh) {
+          edges.push([i, j]);
+          adj[i].push(j); adj[j].push(i);
+        }
+      }
+    }
+
+    gateways = [];
+    var gCount = Math.max(2, Math.round(nodes.length / 26));
+    for (var g = 0; g < gCount; g++) gateways.push(Math.floor(Math.random() * nodes.length));
+
+    pickSource();
+  }
+
+  function pickSource() {
+    srcIndex = Math.floor(Math.random() * nodes.length);
+    hop = nodes.map(function () { return Infinity; });
+    hop[srcIndex] = 0;
+    var queue = [srcIndex];
+    while (queue.length) {
+      var n = queue.shift();
+      for (var k = 0; k < adj[n].length; k++) {
+        var m = adj[n][k];
+        if (hop[m] > hop[n] + 1) { hop[m] = hop[n] + 1; queue.push(m); }
+      }
+    }
+  }
+
+  var start = performance.now();
+  var WAVE_SPEED = 2.4;   // hops per second
+  var maxHop = 1;
+
+  function computeMaxHop() {
+    maxHop = 1;
+    for (var i = 0; i < hop.length; i++) if (isFinite(hop[i]) && hop[i] > maxHop) maxHop = hop[i];
+  }
+
+  function lit(h, front) {
+    if (!isFinite(h)) return 0;
+    var d = front - h;
+    if (d < 0) return 0;
+    if (d < 1) return d;          // ramp up
+    return Math.max(0, 1 - (d - 1) * 0.32); // fade
+  }
+
+  function frame(now) {
+    var t = (now - start) / 1000;
+    var cycle = maxHop / WAVE_SPEED + 2.2;
+    if (t > cycle) { start = now; pickSource(); computeMaxHop(); t = 0; }
+    var front = t * WAVE_SPEED;
+
+    ctx.clearRect(0, 0, W, H);
+
+    // edges
+    for (var e = 0; e < edges.length; e++) {
+      var a = edges[e][0], b = edges[e][1];
+      var la = lit(hop[a], front), lb = lit(hop[b], front);
+      var l = Math.min(la, lb);
+      ctx.beginPath();
+      ctx.moveTo(nodes[a].x, nodes[a].y);
+      ctx.lineTo(nodes[b].x, nodes[b].y);
+      if (l > 0.02) {
+        ctx.strokeStyle = COL.alert;
+        ctx.globalAlpha = 0.18 + l * 0.65;
+        ctx.lineWidth = 0.6 + l * 1.4;
+      } else {
+        ctx.strokeStyle = COL.line;
+        ctx.globalAlpha = 0.9;
+        ctx.lineWidth = 0.8;
+      }
+      ctx.stroke();
+    }
+    ctx.globalAlpha = 1;
+
+    // nodes
+    for (var i = 0; i < nodes.length; i++) {
+      var n = nodes[i];
+      var l = lit(hop[i], front);
+      var isGate = gateways.indexOf(i) !== -1;
+      var pulse = 1 + Math.sin(now / 900 + n.ph) * 0.12;
+      var base = isGate ? 3.4 : 2.2;
+      var rad = base * pulse + l * 3.2;
+
+      if (l > 0.04) {
+        ctx.beginPath();
+        ctx.arc(n.x, n.y, rad + 5, 0, Math.PI * 2);
+        ctx.fillStyle = COL.alert;
+        ctx.globalAlpha = l * 0.16;
+        ctx.fill();
+        ctx.globalAlpha = 1;
+      }
+
+      ctx.beginPath();
+      ctx.arc(n.x, n.y, rad, 0, Math.PI * 2);
+      if (l > 0.15) ctx.fillStyle = COL.alert;
+      else if (isGate) ctx.fillStyle = COL.accent;
+      else ctx.fillStyle = COL.brand;
+      ctx.globalAlpha = l > 0.15 ? 1 : (isGate ? 0.95 : 0.78);
+      ctx.fill();
+      ctx.globalAlpha = 1;
+
+      if (i === srcIndex) {
+        ctx.beginPath();
+        ctx.arc(n.x, n.y, 4.5, 0, Math.PI * 2);
+        ctx.strokeStyle = COL.alert; ctx.lineWidth = 1.6; ctx.stroke();
+      }
+    }
+
+    requestAnimationFrame(frame);
+  }
+
+  function staticDraw() {
+    ctx.clearRect(0, 0, W, H);
+    for (var e = 0; e < edges.length; e++) {
+      var a = edges[e][0], b = edges[e][1];
+      ctx.beginPath();
+      ctx.moveTo(nodes[a].x, nodes[a].y);
+      ctx.lineTo(nodes[b].x, nodes[b].y);
+      ctx.strokeStyle = COL.line; ctx.lineWidth = 0.8; ctx.stroke();
+    }
+    for (var i = 0; i < nodes.length; i++) {
+      var n = nodes[i];
+      var isGate = gateways.indexOf(i) !== -1;
+      ctx.beginPath();
+      ctx.arc(n.x, n.y, isGate ? 3.6 : 2.3, 0, Math.PI * 2);
+      ctx.fillStyle = isGate ? COL.accent : COL.brand;
+      ctx.fill();
+    }
+  }
+
+  function init() {
+    refreshColors();
+    build();
+    computeMaxHop();
+    if (reduced) staticDraw();
+    else requestAnimationFrame(frame);
+  }
+
+  var rt;
+  window.addEventListener("resize", function () {
+    clearTimeout(rt);
+    rt = setTimeout(function () { refreshColors(); build(); computeMaxHop(); if (reduced) staticDraw(); }, 180);
+  });
+
+  var mo = new MutationObserver(function () { refreshColors(); if (reduced) staticDraw(); });
+  mo.observe(document.documentElement, { attributes: true, attributeFilter: ["data-theme"] });
+
+  init();
+})();
+</script>
