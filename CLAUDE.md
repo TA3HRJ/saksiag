@@ -13,11 +13,9 @@ yazma; README bu ayrımı özellikle koruyor.
 
 ## Önce oku
 
-`OZET.md` — yeni sohbetler için hazırlanmış ayrıntılı devir notu (kararlar + gerekçeleri,
-2026-07-21). Açık sonraki adımlar orada listeli: konsensüs mantığının netleştirilmesi, Faz 0 parça
-listesi, güç bütçesi doğrulaması.
-
-Not: `OZET.md` şu an git'te takipsiz. Commit edilmesi gerekiyor — kaybolması kolay.
+`docs/HANDOFF.md` — yeni sohbetler için hazırlanmış ayrıntılı devir notu (kararlar + gerekçeleri).
+Açık sonraki adımlar orada listeli: konsensüs mantığının netleştirilmesi, Faz 0 parça listesi, güç
+bütçesi doğrulaması. Oturum sonunda güncellenen dosya da budur (aşağıya bkz.).
 
 ## Formun gerekçesi
 
@@ -37,7 +35,7 @@ Ayrıntı `LICENSING.md` ve `LICENSES/` altında. Yeni dosya eklerken hangi lisa
 
 Anlamlı bir iş yaptıysan — bir karar verildi, bir şey kırılıp düzeldi, bir varsayım ölçüldü —
 bitirmeden önce `docs/HANDOFF.md`'yi güncelle: nerede kalındı, ne açık kaldı, hangi tuzağa
-düşüldü ve neden. Dosya yoksa oluştur.
+düşüldü ve neden.
 
 Sohbet geçmişi kalıcı değildir. Repoda yazılı olmayan her şey oturumla birlikte gider.
 
@@ -47,8 +45,8 @@ Bu depoda kimlik **yerel** olarak ayarlı (`.git/config`); makinede global `.git
 ve olmamalı:
 
 ```
-user.name  = TA3HRJ
-user.email = TA3HRJ@users.noreply.github.com
+user.name  = TA3HX
+user.email = 136229226+TA3HRJ@users.noreply.github.com
 ```
 
 Yerel olması kasıtlı — klasör başka bir makineye taşındığında commit atmak için hiçbir
