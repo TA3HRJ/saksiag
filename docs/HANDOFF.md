@@ -2,7 +2,7 @@
 
 > Bu dosya, projeyi yeni bir sohbette kaldığı yerden sürdürmek için hazırlanmış bir **bağlam devri**dir. Kararların *gerekçeleri* dahil edildi ki yeniden tartışılmasın.
 
-**Son güncelleme:** 2026-07-21
+**Son güncelleme:** 2026-09-24
 
 ---
 
@@ -27,7 +27,7 @@ Köken: Kullanıcının "insanlık, doğa ve tüm yaşam için önemli program" 
 
 **Üç düğüm tipi (aynı donanım, rol firmware'de):** yaprak (algıla/yayınla) · yönlendirici (röle) · ağ geçidi (internete köprü, mahallede 1–3).
 
-**Olay teyidi (kritik):** Tek düğümün yanlış alarmı yayılmaz; olay ancak N komşu onaylayınca "doğrulanmış" sayılır. Ucuz sensörün güvenilmezliği ağ mimarisiyle telafi edilir. *(Bu konsensüs mantığının detayı — kaç düğüm/süre/eşik — henüz açılmadı; olası bir sonraki adım.)*
+**Olay teyidi (kritik):** Tek düğümün yanlış alarmı yayılmaz; olay ancak N komşu onaylayınca "doğrulanmış" sayılır. Ucuz sensörün güvenilmezliği ağ mimarisiyle telafi edilir. *(Ayrıntı: [`konsensus.md`](konsensus.md) — taslak, 2026-09-24. Özet: bağımsız konumdan k=3 oy / T / R; k canlı komşuya göre uyarlanır; yerel alarm konsensüsten muaf; yavaş tehlikeler oylamayla değil medyanla.)*
 
 **Mesaj önceliği:** P0 afet alarmı → P1 insan mesajı ("iyiyim/yardım") → P2 sensör özeti → P3 rutin telemetri.
 
@@ -72,7 +72,7 @@ Form süs değil, stratejinin kendisi. Ağın tek gerçek sorunu: *yeterince ço
 
 - **GitHub:** https://github.com/TA3HRJ/saksiag (public) — hesap `TA3HRJ`, `gh` CLI ile bağlı.
 - **Canlı sayfa (GitHub Pages):** https://ta3hrj.github.io/saksiag/ (main/kök, HTTPS zorunlu, push'ta otoyayın).
-- **Yerel yol:** `C:\HAM\SaksiAg` — dal `main`, `origin/main` ile senkron.
+- **Yerel yol:** `C:\Claude Projects\saksi-ag` — dal `main`, `origin/main` ile senkron. (Eski yol `C:\HAM\SaksiAg` idi; taşındı.)
 - **Claude Artifact (kullanıcıya özel, private):** https://claude.ai/code/artifact/fa8de2e0-5641-461c-a012-a1a7f13eb802 — içerik `index.html` ile aynı.
 
 **Depo içeriği:**
@@ -80,7 +80,9 @@ Form süs değil, stratejinin kendisi. Ağın tek gerçek sorunu: *yeterince ço
 - `README.md` — proje özeti
 - `LICENSING.md`, `CONTRIBUTING.md`
 - `LICENSE` (AGPL-3.0), `LICENSES/CERN-OHL-S-2.0.txt`, `LICENSES/CC-BY-SA-4.0.txt`
-- `.gitignore`, bu `OZET.md`
+- `.gitignore`, `CLAUDE.md` (kalıcı proje talimatı), bu `docs/HANDOFF.md`
+- `docs/konsensus.md` — olay teyidi tasarım taslağı (CC-BY-SA-4.0)
+- `docs/konsensus.md` — olay teyidi tasarım taslağı (CC-BY-SA-4.0)
 
 ---
 
@@ -94,8 +96,9 @@ Gerekçe (kullanıcının "ticariye dönerse?" sorusuna): Açık kaynak ≠ tica
 
 ## 8. Açık sonraki adımlar (kullanıcı seçecek)
 
-- Olay **teyit/konsensüs mantığını** netleştir (kaç düğüm, süre, eşik) — yangından depreme her şeyin ortak kritik parçası.
-- Faz 0 için **somut tek-düğüm parça listesi + bağlantı şeması** (sipariş edilebilir düzey).
+- ~~Olay teyit/konsensüs mantığı~~ → taslak yazıldı: `docs/konsensus.md`. Kullanıcı henüz gözden geçirmedi.
+- Faz 0 için **somut tek-düğüm parça listesi + bağlantı şeması** (sipariş edilebilir düzey). Konsensüs taslağından gelen şartlar: sıcaklık sensörü **radyasyon kalkanında**; düğüm tüm ham okumaları + yerel tetikleri **zaman damgalı kaydetmeli** (yanlış tetik oranı λ Faz 0'da ölçülür); yeri ölçülecek bir zemin-seviyesi sel sensörü seçeneği.
+- **Duty-cycle/band doğrulaması:** Meshtastic EU_868 ön ayarının alt bandı + BTK kısa menzilli cihaz kuralları. "~%1" varsayımı kontrol edilmedi.
 - **Güç bütçesini gerçek sayılarla** doğrula (sensör başına tüketim × duty-cycle → panel/batarya boyutu).
 - Marka/logo notu, depo **topics** & açıklaması.
 - (İstenirse) LICENSE'ı GitHub Pages/depoda görünür kılma zaten yapıldı.
@@ -105,7 +108,63 @@ Gerekçe (kullanıcının "ticariye dönerse?" sorusuna): Açık kaynak ≠ tica
 ## 9. Çalışma notları (yeni sohbet için)
 
 - Kullanıcı **Türkçe** iletişim kuruyor; yanıtlar Türkçe.
-- Oturumun ana çalışma dizini `C:\HAM\Plex`; **proje ise `C:\HAM\SaksiAg`** — git komutlarını `-C "C:/HAM/SaksiAg"` ile ya da o dizine geçerek çalıştır.
+- Proje artık oturumun ana çalışma dizini: `C:\Claude Projects\saksi-ag`. Ayrıca `-C` ile yol vermek gerekmiyor.
 - Git Bash `gh api`'de baştaki `/`'ı dosya yoluna çevirir → endpoint'i **slash'sız** ver (`repos/...`).
-- Git kimliği: `TA3HRJ` / `ta3hrj@gmail.com`. Commit'ler DCO ile imzalanıyor (`git commit -s`).
+- Git kimliği: `TA3HX` / `136229226+TA3HRJ@users.noreply.github.com`, **yerel** olarak `.git/config`'te (global `.gitconfig` yok). Çağrı işareti 2026-09-16'da TA3HRJ → TA3HX oldu; GitHub hesap adı hâlâ `TA3HRJ`. Gerekçesi CLAUDE.md'de ve `a6e0b48` mesajında. Not: `CONTRIBUTING.md` DCO sign-off istiyor ama son üç commit imzasız — bkz. §10.
 - Kullanıcının üslubu: dürüst sınırları/karşı-argümanları açıkça isteyen, mühendislik gerekçesi arayan biri. Abartıdan kaçın, "dürüst sınır" kutuları bu projenin imzası.
+
+---
+
+## 10. Oturum günlüğü
+
+### 2026-09-06 — bakım oturumu
+
+Kod/konsept değişmedi; yalnızca depo hijyeni.
+
+- `OZET.md` → `docs/HANDOFF.md` olarak taşındı. Gerekçe: CLAUDE.md zaten oturum sonunda
+  `docs/HANDOFF.md` güncellenmesini istiyordu, yani iki ayrı devir-notu konvansiyonu vardı.
+  Tek dosyada birleştirildi.
+- CLAUDE.md'deki "`OZET.md` git'te takipsiz" notu kaldırıldı — dosya `f4d1574` ile commit
+  edilmişti, not eskimişti.
+- Bu dosyadaki eskimiş olgular düzeltildi: yerel yol, çalışma dizini, git kimliği (§6, §9).
+
+**Açık kalan / dikkat:** `CONTRIBUTING.md` DCO sign-off şart koşuyor; `ea8240f` imzalı ama
+`f4d1574`, `f250daf` ve `a6e0b48` imzasız; `ea8240f`'teki sign-off adresi eski gmail adresi. Geçmişi yeniden yazmak
+yerine bundan sonrasının `git commit -s` ile atılması ve adresin noreply olması yeterli —
+ama bu bir karar, henüz verilmedi.
+
+### 2026-09-24 — konsensüs taslağı
+
+Kullanıcı §8'den konsensüs mantığını seçti. Çıktı `docs/konsensus.md` (CC-BY-SA-4.0); README'deki
+"Olay teyidi" paragrafından bağlandı. Varılan tasarım kararları ve gerekçeleri:
+
+- **Konsensüs yalnızca bağımsız hataları çözer.** Ortak nedenli hatalarda (Sahra tozu, öğle
+  güneşi, havai fişek) ağ yanlış sonuçta uzlaşır. Bunlara karşı savunma k değil, düğüm içi
+  füzyon ve mekânsal biçim testi. Belgenin omurgası bu ayrım.
+- **Yerel alarm konsensüsten muaf.** Tek dairenin yangını k balkona ulaşmayabilir; konsensüs
+  yalnızca mahalleye *yayma* kararını verir.
+- **k=3 gerekçesi hesapla konuldu:** Formül `C(M,k)·k·λ^k·T^(k−1)`, Monte Carlo ile doğrulandı.
+  k=3 ancak düğüm başı yanlış şüphe haftada birin altındaysa yetiyor. Bu yüzden gürültülü düğüm
+  karantinası zorunlu hâle geldi. k'nın üst sınırını yanlış alarm değil, gerçek olayın kaç
+  balkona ulaştığı belirliyor; bu sayı bilinmiyor.
+- **Oy "bağımsız konum" başına, düğüm kimliği başına değil.** Komşuluk hop'la değil, kurulumda
+  telefondan atanan kaba hücreyle ölçülüyor. Kesin koordinat saklanmıyor; bu bilinçli bir
+  gizlilik tercihi.
+- **Lider yok:** Her düğüm oyları kendisi sayar; olay kimliği deterministik hash olduğu için
+  aynı anda ilan eden iki düğüm aynı kimliği üretir.
+- **Yavaş tehlikelerde (sıcak dalga, don, fırtına) oylama yok, komşu medyanı var.**
+
+**Bu oturumda yakalanan tutarsızlıklar (README'ye dokunulmadı, belgede açıkça yazıldı):**
+- README yangın için "CO" diyor ama gaz sensörü v1.1'de. v1'de bu bacağı BME680 VOC karşılıyor
+  (§5.1).
+- Sel "güçlü" olarak listelenmiş, ama balkon düğümü sokaktaki suyu göremez. Gördüğü yağış
+  şiddeti. P0 sel alarmı ancak zemin seviyesindeki düğümlerden doğabilir (§5.2). README'deki
+  sel iddiası yumuşatılmalı mı? Karar kullanıcıda.
+- Deprem için ek gerekçe: LoRa ile oy toplamak saniyeler sürüyor ve GPS'siz saatler kayıyor.
+  Önceki "arka plan katkısı" kararını güçlendiriyor, genişletmiyor.
+
+**Tuzak:** Makinede `python` komutu Microsoft Store kısayoluna düşüyor. Çalışan yorumlayıcı
+`C:\Users\Admin\AppData\Local\Programs\Python\Python313\python.exe`.
+
+**Açık:** Taslak henüz gözden geçirilmedi. Değişiklikler (önceki oturumdan staged kalan
+`OZET.md → docs/HANDOFF.md` taşıması dahil) henüz commit'lenmedi.

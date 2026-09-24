@@ -36,7 +36,7 @@ Doğru işi doğru radyoya yaptırmak üzerine kurulu:
 
 **Üç düğüm tipi (aynı donanım, farklı rol):** yaprak düğüm (algılar/yayınlar) · yönlendirici (röle) · ağ geçidi (internete köprü, mahallede 1–3).
 
-**Olay teyidi:** Tek düğümün yanlış alarmı yayılmaz; olay ancak birkaç komşu aynı anda onaylayınca "doğrulanmış" sayılır. Ucuz sensörlerin güvenilmezliği ağ mimarisiyle telafi edilir.
+**Olay teyidi:** Tek düğümün yanlış alarmı yayılmaz; olay ancak birkaç komşu aynı anda onaylayınca "doğrulanmış" sayılır. Ucuz sensörlerin güvenilmezliği ağ mimarisiyle telafi edilir. Tasarım taslağı ve sınırları: [`docs/konsensus.md`](docs/konsensus.md).
 
 **Mesaj önceliği (LoRa %1 duty-cycle bütçesi):** `P0` afet alarmı → `P1` insan mesajı → `P2` sensör özeti → `P3` rutin telemetri.
 
