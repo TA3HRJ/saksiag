@@ -110,7 +110,7 @@ Gerekçe (kullanıcının "ticariye dönerse?" sorusuna): Açık kaynak ≠ tica
 - Kullanıcı **Türkçe** iletişim kuruyor; yanıtlar Türkçe.
 - Proje artık oturumun ana çalışma dizini: `C:\Claude Projects\saksi-ag`. Ayrıca `-C` ile yol vermek gerekmiyor.
 - Git Bash `gh api`'de baştaki `/`'ı dosya yoluna çevirir → endpoint'i **slash'sız** ver (`repos/...`).
-- Git kimliği: `TA3HX` / `136229226+TA3HRJ@users.noreply.github.com`, **yerel** olarak `.git/config`'te (global `.gitconfig` yok). Çağrı işareti 2026-09-16'da TA3HRJ → TA3HX oldu; GitHub hesap adı hâlâ `TA3HRJ`. Gerekçesi CLAUDE.md'de ve `a6e0b48` mesajında. Not: `CONTRIBUTING.md` DCO sign-off istiyor ama son üç commit imzasız — bkz. §10.
+- Git kimliği: `TA3HX` / `136229226+TA3HRJ@users.noreply.github.com`, **yerel** olarak `.git/config`'te (global `.gitconfig` yok). Çağrı işareti 2026-09-16'da TA3HRJ → TA3HX oldu; GitHub hesap adı hâlâ `TA3HRJ`. Gerekçesi CLAUDE.md'de ve `a6e0b48` mesajında. **Commit'ler `git commit -s` ile atılır** (DCO, `CONTRIBUTING.md`; karar 2026-09-24). `f4d1574`, `f250daf`, `a6e0b48` imzasız kaldı, geçmiş yeniden yazılmadı — bkz. §10.
 - Kullanıcının üslubu: dürüst sınırları/karşı-argümanları açıkça isteyen, mühendislik gerekçesi arayan biri. Abartıdan kaçın, "dürüst sınır" kutuları bu projenin imzası.
 
 ---
@@ -131,7 +131,7 @@ Kod/konsept değişmedi; yalnızca depo hijyeni.
 **Açık kalan / dikkat:** `CONTRIBUTING.md` DCO sign-off şart koşuyor; `ea8240f` imzalı ama
 `f4d1574`, `f250daf` ve `a6e0b48` imzasız; `ea8240f`'teki sign-off adresi eski gmail adresi. Geçmişi yeniden yazmak
 yerine bundan sonrasının `git commit -s` ile atılması ve adresin noreply olması yeterli —
-ama bu bir karar, henüz verilmedi.
+ama bu bir karar, henüz verilmedi. *(2026-09-24'te verildi: bundan sonra `-s`.)*
 
 ### 2026-09-24 — konsensüs taslağı
 
@@ -166,5 +166,9 @@ Kullanıcı §8'den konsensüs mantığını seçti. Çıktı `docs/konsensus.md
 **Tuzak:** Makinede `python` komutu Microsoft Store kısayoluna düşüyor. Çalışan yorumlayıcı
 `C:\Users\Admin\AppData\Local\Programs\Python\Python313\python.exe`.
 
-**Açık:** Taslak henüz gözden geçirilmedi. Değişiklikler (önceki oturumdan staged kalan
-`OZET.md → docs/HANDOFF.md` taşıması dahil) henüz commit'lenmedi.
+**DCO kararı verildi:** Kullanıcı bundan sonraki commit'lerin `git commit -s` ile atılmasını
+onayladı. Sign-off, yerel kimlikten gelir (`TA3HX <136229226+TA3HRJ@...>`). Geçmiş yeniden
+yazılmadı; eski imzasız commit'ler olduğu gibi kaldı. İlk imzalı commit'ler: `685eab8` (taşıma),
+`0844acc` (konsensüs taslağı).
+
+**Açık:** Taslak henüz gözden geçirilmedi. Commit'ler push edilmedi.
