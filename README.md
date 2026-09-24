@@ -48,15 +48,18 @@ Doğru işi doğru radyoya yaptırmak üzerine kurulu:
 
 | Afet | Mesh önden uyarır mı? | Sensör |
 |------|------------------------|--------|
-| Sel / taşkın | 🟢 Güçlü | su seviyesi + yağmur + nem |
-| Yangın | 🟢 Güçlü | sıcaklık + PM2.5 + CO |
-| Zehirli bulut / kimyasal | 🟢 Güçlü | gaz (CO / NO₂ / VOC) |
+| Şiddetli yağış → sel riski | 🟢 Güçlü | hazne doluş hızı (yağış şiddeti) |
+| Su baskını | 🟡 Yalnızca zemin seviyesindeki düğümlerle | zemin seviyesi su sensörü |
+| Yangın | 🟢 Güçlü | sıcaklık + PM2.5 + VOC (BME680) · CO *v1.1* |
+| Zehirli bulut / kimyasal | 🟢 Güçlü *(v1.1)* | gaz (CO / NO₂ / VOC) |
 | Sıcak hava dalgası | 🟢 Fazlasıyla | sıcaklık + nem |
 | Aşırı soğuk / don | 🟢 Evet | sıcaklık |
 | Heyelan | 🟡 İyi | nem + eğim (ivmeölçer) |
 | Fırtına / dolu | 🟡 Birkaç dk | barometrik basınç |
 | Doğalgaz kaçağı | 🟡 Yerel güvenlik | metan / LPG |
 | Deprem | 🟡 İnternet geçidiyle uzağa | ivmeölçer → ön uyarı (uzak) + afet-sonrası teyit |
+
+**Sel notu (dürüst konumlandırma):** Düğümlerin çoğu üst katlardaki balkonlarda ve sokaktaki suyu göremez. Gördükleri, saksı haznesinin doluş hızından ölçülen yağış şiddeti. Bu yüzden sel ikiye ayrılır: *şiddetli yağış riski* birçok balkondan güçlü biçimde teyit edilir. *Su baskını* alarmı ise ancak zemin seviyesine (giriş kat, bahçe, bodrum girişi) yerleştirilmiş düğümlerden doğabilir. Ayrıntı: [`docs/konsensus.md`](docs/konsensus.md) §5.2.
 
 **Deprem notu (dürüst konumlandırma):** Yerel LoRa atlaması sismik dalgayı geçemez; merkez üssünde uyarı yoktur. Ama internete bağlı ağ geçitleri devredeyken elektronik sinyal uzak mahallelere dalgadan hızlı ulaşır — uzaklaştıkça artan saniyelerce ön uyarı mümkün. Bunu **ana vaat değil**, ağ yoğunlaştıkça beliren ve ulusal sistemleri (AFAD, telefon-tabanlı uyarı) besleyen bir **arka-plan katkı katmanı** olarak konumlandırıyoruz.
 

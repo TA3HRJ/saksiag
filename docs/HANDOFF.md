@@ -171,4 +171,18 @@ onayladı. Sign-off, yerel kimlikten gelir (`TA3HX <136229226+TA3HRJ@...>`). Ge�
 yazılmadı; eski imzasız commit'ler olduğu gibi kaldı. İlk imzalı commit'ler: `685eab8` (taşıma),
 `0844acc` (konsensüs taslağı).
 
-**Açık:** Taslak henüz gözden geçirilmedi. Commit'ler push edilmedi.
+**Açık:** Taslak henüz gözden geçirilmedi.
+
+### 2026-09-25 — README düzeltmeleri
+
+Kullanıcı yukarıdaki iki tutarsızlığın README'de düzeltilmesini onayladı:
+- Sel satırı ikiye ayrıldı: *şiddetli yağış → sel riski* 🟢 (hazne doluş hızı) ve *su baskını*
+  🟡 (yalnızca zemin seviyesindeki düğümlerle). Tablonun altına deprem notu biçiminde bir
+  "Sel notu" eklendi.
+- Yangın sensörü `sıcaklık + PM2.5 + VOC (BME680) · CO v1.1` oldu. Aynı gerekçeyle zehirli
+  bulut satırı da *(v1.1)* olarak işaretlendi, çünkü gaz sensörü v1.1'de.
+
+**Açık:** `index.html` (canlı sayfa) aynı eski iddiaları taşıyor: afet tablosu (~470–472. satır),
+sensör paragrafı (~486) ve su seviyesi parça satırı (~590). Kullanıcı yalnızca README'yi istedi;
+sayfa henüz düzeltilmedi. HANDOFF §3'teki "🟢 Güçlü: sel" ifadesi tarihsel karar kaydı olarak
+bırakıldı.
