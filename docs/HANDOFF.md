@@ -182,7 +182,9 @@ Kullanıcı yukarıdaki iki tutarsızlığın README'de düzeltilmesini onaylad�
 - Yangın sensörü `sıcaklık + PM2.5 + VOC (BME680) · CO v1.1` oldu. Aynı gerekçeyle zehirli
   bulut satırı da *(v1.1)* olarak işaretlendi, çünkü gaz sensörü v1.1'de.
 
-**Açık:** `index.html` (canlı sayfa) aynı eski iddiaları taşıyor: afet tablosu (~470–472. satır),
-sensör paragrafı (~486) ve su seviyesi parça satırı (~590). Kullanıcı yalnızca README'yi istedi;
-sayfa henüz düzeltilmedi. HANDOFF §3'teki "🟢 Güçlü: sel" ifadesi tarihsel karar kaydı olarak
-bırakıldı.
+Ardından kullanıcının isteğiyle `index.html` (canlı sayfa) de aynı biçimde düzeltildi: afet
+tablosu, paylaşımlı sensörler paragrafı ve su seviyesi parça satırı. Ayrıca deprem kutusuyla aynı
+stilde bir "Dürüst sınır: sel" kutusu eklendi. Kutu, konsensüs taslağına GitHub blob
+bağlantısıyla gidiyor. Pages'te `.md` dosyasına göreli bağlantı güvenilir biçimde işlemediği
+için göreli bağlantı kullanılmadı. HANDOFF §3'teki "🟢 Güçlü: sel" ifadesi tarihsel karar kaydı
+olarak bırakıldı.

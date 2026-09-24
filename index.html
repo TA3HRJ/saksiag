@@ -467,9 +467,10 @@
           <tr><th>Afet</th><th>Yayılma hızı</th><th>Mesh önden uyarır mı?</th><th>Sensör</th></tr>
         </thead>
         <tbody>
-          <tr><td><b>Sel / taşkın</b></td><td class="hz">dk–saat, vadi boyunca</td><td><span class="vd g">güçlü</span></td><td class="hz">su seviyesi + yağmur + nem</td></tr>
-          <tr><td><b>Yangın</b></td><td class="hz">rüzgârla km/saat</td><td><span class="vd g">güçlü</span></td><td class="hz">sıcaklık + PM2.5 + CO</td></tr>
-          <tr><td><b>Zehirli bulut</b></td><td class="hz">rüzgârla km/saat</td><td><span class="vd g">güçlü</span></td><td class="hz">gaz (CO / NO₂ / VOC)</td></tr>
+          <tr><td><b>Şiddetli yağış → sel riski</b></td><td class="hz">dk–saat, vadi boyunca</td><td><span class="vd g">güçlü</span></td><td class="hz">hazne doluş hızı (yağış şiddeti)</td></tr>
+          <tr><td><b>Su baskını</b></td><td class="hz">dk–saat, vadi boyunca</td><td><span class="vd y">yalnızca zemin seviyesi düğümlerle</span></td><td class="hz">zemin seviyesi su sensörü</td></tr>
+          <tr><td><b>Yangın</b></td><td class="hz">rüzgârla km/saat</td><td><span class="vd g">güçlü</span></td><td class="hz">sıcaklık + PM2.5 + VOC (BME680) · CO v1.1</td></tr>
+          <tr><td><b>Zehirli bulut</b></td><td class="hz">rüzgârla km/saat</td><td><span class="vd g">güçlü · v1.1</span></td><td class="hz">gaz (CO / NO₂ / VOC)</td></tr>
           <tr><td><b>Sıcak hava dalgası</b></td><td class="hz">saat–gün</td><td><span class="vd g">fazlasıyla</span></td><td class="hz">sıcaklık + nem</td></tr>
           <tr><td><b>Aşırı soğuk / don</b></td><td class="hz">saat</td><td><span class="vd g">evet</span></td><td class="hz">sıcaklık</td></tr>
           <tr><td><b>Heyelan</b></td><td class="hz">saat (yağış sonrası)</td><td><span class="vd y">iyi</span></td><td class="hz">nem + eğim (ivmeölçer)</td></tr>
@@ -483,7 +484,11 @@
 
     <div class="callout ok" style="margin-top:20px">
       <span class="lbl">✓ Zarafet: paylaşımlı sensörler</span>
-      <p>3–4 ucuz parça çoğu afeti kapsıyor: <b>BME680</b> (sıcak dalga + don + fırtına + hava), <b>PM sensörü</b> (yangın dumanı + kirlilik), <b>gaz sensörü</b> (yangın + kaçak + kimyasal), <b>su seviyesi</b> (sel). İvmeölçer zaten var — deprem teyidi + heyelan eğimi için çift görev yapar.</p>
+      <p>3–4 ucuz parça çoğu afeti kapsıyor: <b>BME680</b> (sıcak dalga + don + fırtına + hava), <b>PM sensörü</b> (yangın dumanı + kirlilik), <b>gaz sensörü</b> (<i>v1.1</i>: yangın + kaçak + kimyasal), <b>su seviyesi</b> (yağış şiddeti; zemin katta su baskını). İvmeölçer zaten var — deprem teyidi + heyelan eğimi için çift görev yapar.</p>
+    </div>
+    <div class="callout">
+      <span class="lbl">! Dürüst sınır: sel</span>
+      <p>Düğümlerin çoğu üst kat balkonlarında ve <b>sokaktaki suyu göremez</b>. Gördükleri, saksı haznesinin doluş hızından ölçülen yağış şiddeti. Bu yüzden sel ikiye ayrılır: <b>şiddetli yağış riski</b> birçok balkondan güçlü biçimde teyit edilir; <b>su baskını</b> alarmı ise ancak zemin seviyesine (giriş kat, bahçe, bodrum girişi) yerleştirilmiş düğümlerden doğabilir. Ayrıntı: <a href="https://github.com/TA3HRJ/saksiag/blob/main/docs/konsensus.md">olay teyidi taslağı</a>, §5.2.</p>
     </div>
   </section>
 
@@ -587,7 +592,7 @@
           <tr><td class="part">MEMS ivmeölçer</td><td>Sarsıntı + heyelan eğimi</td><td>Komşu düğümlerle teyit · çift görev</td><td><span class="v1 now">v1</span></td></tr>
           <tr><td class="part">BME680</td><td>Sıcaklık + nem + basınç + VOC</td><td>Sıcak dalga · don · fırtına · hava</td><td><span class="v1 now">v1</span></td></tr>
           <tr><td class="part">PM sensörü (PMS5003)</td><td>Partikül (duman)</td><td>Yangın + kirlilik · fanlı, aralıklı çalıştır</td><td><span class="v1 now">v1</span></td></tr>
-          <tr><td class="part">Su seviyesi (ultrasonik)</td><td>Sel / taşkın algılama</td><td>Yağmur + toprak nem ile birlikte</td><td><span class="v1 now">v1</span></td></tr>
+          <tr><td class="part">Su seviyesi (ultrasonik)</td><td>Hazne: yağış şiddeti · zemin katta: su baskını</td><td>Üst kat balkonu sokaktaki suyu göremez</td><td><span class="v1 now">v1</span></td></tr>
           <tr><td class="part">LiFePO4 + şarj kontrol</td><td>Enerji depolama</td><td>Soğukta şarj sınırına dikkat</td><td><span class="v1 now">v1</span></td></tr>
           <tr><td class="part">Güneş paneli (1–2 W)</td><td>Enerji hasadı</td><td>Balkon yönüne göre boyutlandır</td><td><span class="v1 now">v1</span></td></tr>
           <tr><td class="part">3D-baskı gövde</td><td>Saksı + elektronik yuvası</td><td>Açık dosya, tamir edilebilir</td><td><span class="v1 now">v1</span></td></tr>
